@@ -1,0 +1,37 @@
+GET http://127.0.0.1:8080/hello
+Authorization: Bearer eyJraWQiOiJhcHBJZCIsImFsZyI6IkhTMjU2In0.eyJzdWIiOiJ0b2tlbiBjb21wYW55IiwidXNlcm5hbWUiOiJKb2huIiwiaWF0IjoxNzQwMTQyOTc4LCJleHAiOjE3NDAxNDM4Nzh9.0lcMDTrKjJob8SwhTjyITM86-as17Wt_pj17SL1GcdI
+
+###
+
+POST http://127.0.0.1:8080/hellpo
+
+###
+
+POST http://127.0.0.1:8080/auth/signup
+Content-Type: application/json
+
+{
+    "name": "John1",
+    "email":"example.tt123@tst.com",
+    "password":"1234"
+}
+###
+
+POST http://127.0.0.1:8080/auth/login
+Content-Type: application/json
+
+{
+    "name": "John",
+    "password":"123"
+}
+
+###
+
+POST http://127.0.0.1:8080/auth/refresh
+Authorization: Bearer eyJraWQiOiJhcHBJZCIsImFsZyI6IkhTMjU2In0.eyJzdWIiOiJ0b2tlbiBjb21wYW55IiwidXNlcm5hbWUiOiJKb2huIiwiaWF0IjoxNzQwMTQzMjc2LCJleHAiOjE3NDAxNDQxNzZ9.yBTyeGoO28C13K4Ckc9UKKrCYCp6OXzO_hulhpEdAAs
+
+eyJraWQiOiJhcHBJZCIsImFsZyI6IkhTMjU2In0.eyJzdWIiOiJ0b2tlbiBjb21wYW55IiwidXNlcm5hbWUiOiJKb2huIiwiaWF0IjoxNzQwMTQzMjc2LCJleHAiOjE3NDAzNTkyNzZ9.0J8HTVtqMPy4KGhrLKYY7fYcPkk8nE_hpn_wtHnQyVQ
+###
+GET http://127.0.0.1:8080/auth/test
+//Authorization: 321
+

@@ -1,0 +1,54 @@
+package org.practice.jwtauth.config;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.practice.jwtauth.util.JwtUtil;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import static org.practice.jwtauth.util.Const.BEARER_PREFIX;
+
+@Component
+public class JwtAuthorizationFilter extends OncePerRequestFilter {
+
+    private final JwtUtil jwtUtil;
+
+    public JwtAuthorizationFilter(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+
+        String authorization = request.getHeader("Authorization");
+        if(authorization == null || !authorization.startsWith(BEARER_PREFIX)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        String token = authorization.substring(BEARER_PREFIX.length());
+
+        if (!jwtUtil.isValid(token)) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        Jws<Claims> claimsJws = jwtUtil.parseToken(token);
+        String jsonSubject = claimsJws.getPayload().getSubject();
+        Authentication authentication = new UsernamePasswordAuthenticationToken(jsonSubject, "", new ArrayList<>());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        filterChain.doFilter(request, response);
+    }
+
+}
