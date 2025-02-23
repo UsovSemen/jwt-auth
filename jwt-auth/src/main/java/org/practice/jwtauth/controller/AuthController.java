@@ -5,6 +5,8 @@ import org.practice.jwtauth.model.LoginResponse;
 import org.practice.jwtauth.model.LoginUser;
 import org.practice.jwtauth.service.UserService;
 import org.practice.jwtauth.util.JwtUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+
+    private final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
@@ -56,6 +60,9 @@ public class AuthController {
     }
 
     private ResponseEntity<LoginResponse> generateTokes(String name) {
+
+        logger.info("Generating tokens for {}", name);
+
         String acc = jwtUtil.generateAccessToken(name);
         String refresh = jwtUtil.generateRefreshToken(name);
         return new ResponseEntity<>(new LoginResponse(name, acc, refresh), HttpStatus.OK);
