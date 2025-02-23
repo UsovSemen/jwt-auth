@@ -1,9 +1,12 @@
 GET http://127.0.0.1:8080/hello
-Authorization: Bearer eyJraWQiOiJhcHBJZCIsImFsZyI6IkhTMjU2In0.eyJzdWIiOiJ0b2tlbiBjb21wYW55IiwidXNlcm5hbWUiOiJKb2huIiwiaWF0IjoxNzQwMTQyOTc4LCJleHAiOjE3NDAxNDM4Nzh9.0lcMDTrKjJob8SwhTjyITM86-as17Wt_pj17SL1GcdI
+Authorization: Bearer eyJraWQiOiJhcHBJZCIsImFsZyI6IkhTMjU2In0.eyJzdWIiOiJ0b2tlbiBjb21wYW55IiwidXNlcm5hbWUiOiJKb2huIiwiaWF0IjoxNzQwMjkyOTkyLCJleHAiOjE3NDAyOTM4OTJ9.fkBR93IaUL6WaBhZ5We2jab7azCgUg66Xb8qDXLWTMg
 
 ###
 
 POST http://127.0.0.1:8080/hellpo
+Cookie: JSESSIONID=12B483A259609A8E7600D514FB6A8FCF
+X-CSRF-TOKEN: F6K9snsTQfwIekk2-Fag9devU0xQwfp_O73GtVFt6lYM4kezIMGK1kx3cp4lHyhQyHuUk-_Jfi5o-MxSDor30DdY2GY92iKB
+Authorization: Bearer eyJraWQiOiJhcHBJZCIsImFsZyI6IkhTMjU2In0.eyJzdWIiOiJ0b2tlbiBjb21wYW55IiwidXNlcm5hbWUiOiJKb2huIiwiaWF0IjoxNzQwMjkyOTkyLCJleHAiOjE3NDAyOTM4OTJ9.fkBR93IaUL6WaBhZ5We2jab7azCgUg66Xb8qDXLWTMg
 
 ###
 
@@ -19,6 +22,8 @@ Content-Type: application/json
 
 POST http://127.0.0.1:8080/auth/login
 Content-Type: application/json
+Cookie: JSESSIONID=12B483A259609A8E7600D514FB6A8FCF
+X-CSRF-TOKEN: F6K9snsTQfwIekk2-Fag9devU0xQwfp_O73GtVFt6lYM4kezIMGK1kx3cp4lHyhQyHuUk-_Jfi5o-MxSDor30DdY2GY92iKB
 
 {
     "name": "John",

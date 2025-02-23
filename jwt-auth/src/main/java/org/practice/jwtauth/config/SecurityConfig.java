@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CsrfFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -18,10 +19,12 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
+    private final CsrfTokenLogger csrfTokenLogger;
 
-    public SecurityConfig(CustomUserDetailsService userDetailsService, JwtAuthorizationFilter jwtAuthorizationFilter) {
+    public SecurityConfig(CustomUserDetailsService userDetailsService, JwtAuthorizationFilter jwtAuthorizationFilter, CsrfTokenLogger csrfTokenLogger) {
         this.userDetailsService = userDetailsService;
         this.jwtAuthorizationFilter = jwtAuthorizationFilter;
+        this.csrfTokenLogger = csrfTokenLogger;
     }
 
     @Bean
@@ -36,10 +39,10 @@ public class SecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
         http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAfter(csrfTokenLogger, CsrfFilter.class);
         http.authorizeHttpRequests(c -> c
-                        .requestMatchers("/auth/login", "/auth/signup").permitAll()
-                        .anyRequest().authenticated())
-                .csrf(c -> c.disable());
+                        .requestMatchers("/auth/login", "/auth/signup", "/auth/test").permitAll()
+                        .anyRequest().authenticated());
 
         return http.build();
     }
