@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -39,9 +40,12 @@ public class SecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
         http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+
         http.addFilterAfter(csrfTokenLogger, CsrfFilter.class);
+        // TODO if it possible to configure it by Profile (dev-disable, qa-enable)
+        http.csrf(AbstractHttpConfigurer::disable); // disable for dev
         http.authorizeHttpRequests(c -> c
-                        .requestMatchers("/auth/login", "/auth/signup", "/auth/test").permitAll()
+                        .requestMatchers("/auth/login", "/auth/signup", "/auth/test", "/main").permitAll()
                         .anyRequest().authenticated());
 
         return http.build();

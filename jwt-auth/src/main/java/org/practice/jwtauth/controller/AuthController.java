@@ -30,6 +30,7 @@ public class AuthController {
         this.userService = userService;
     }
 
+//    @CrossOrigin("http://google.com")
     @GetMapping("/test")
     public String auth() {
         return "test";

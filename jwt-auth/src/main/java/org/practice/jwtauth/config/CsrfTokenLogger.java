@@ -17,7 +17,11 @@ public class CsrfTokenLogger implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         CsrfToken token =
                 (CsrfToken) servletRequest.getAttribute("_csrf");
-        LOGGER.info("CSRF token " + token.getToken());
+        if(token != null) {
+            LOGGER.info("CSRF token " + token.getToken());
+        } else {
+            LOGGER.info("CSRF token is null");
+        }
         filterChain.doFilter(servletRequest, servletResponse);
     }
 }
