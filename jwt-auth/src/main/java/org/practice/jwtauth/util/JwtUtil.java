@@ -16,10 +16,14 @@ public class JwtUtil {
     private final long refreshTokenValidity = 60 * 60 * 60 * 1000;
 
     public boolean isValid(String authentication) {
-        Jws<Claims> claimsJws = parseToken(authentication);
-        return claimsJws.getPayload()
-                .getExpiration()
-                .after(new Date());
+        try {
+            Jws<Claims> claimsJws = parseToken(authentication);
+            return claimsJws.getPayload()
+                    .getExpiration()
+                    .after(new Date());
+        } catch (io.jsonwebtoken.JwtException ex) {
+            return false;
+        }
     }
 
     public String generateAccessToken(String username) {

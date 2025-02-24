@@ -1,5 +1,5 @@
 GET http://127.0.0.1:8080/hello
-Authorization: Bearer eyJraWQiOiJhcHBJZCIsImFsZyI6IkhTMjU2In0.eyJzdWIiOiJ0b2tlbiBjb21wYW55IiwidXNlcm5hbWUiOiJKb2huIiwiaWF0IjoxNzQwMjkyOTkyLCJleHAiOjE3NDAyOTM4OTJ9.fkBR93IaUL6WaBhZ5We2jab7azCgUg66Xb8qDXLWTMg
+Authorization: Bearer eyJraWQiOiJhcHBJZCIsImFsZyI6IkhTMjU2In0.eyJzdWIiOiJ0b2tlbiBjb21wYW55IiwidXNlcm5hbWUiOiJKb2huIiwiaWF0IjoxNzQwMzg5MTIyLCJleHAiOjE3NDAzOTAwMjJ9.YNLy6NyDl2Wm9zKpI7usQ96Qv8Z10SajrATMV7l9AvY
 
 ###
 
@@ -14,16 +14,16 @@ POST http://127.0.0.1:8080/auth/signup
 Content-Type: application/json
 
 {
-    "name": "John1",
-    "email":"example.tt123@tst.com",
-    "password":"1234"
+    "name": "John123",
+    "email":"example.tt12§123@tst.com",
+    "password":"demo"
 }
 ###
 
 POST http://127.0.0.1:8080/auth/login
 Content-Type: application/json
-Cookie: JSESSIONID=12B483A259609A8E7600D514FB6A8FCF
-X-CSRF-TOKEN: F6K9snsTQfwIekk2-Fag9devU0xQwfp_O73GtVFt6lYM4kezIMGK1kx3cp4lHyhQyHuUk-_Jfi5o-MxSDor30DdY2GY92iKB
+#Cookie: JSESSIONID=12B483A259609A8E7600D514FB6A8FCF
+#X-CSRF-TOKEN: F6K9snsTQfwIekk2-Fag9devU0xQwfp_O73GtVFt6lYM4kezIMGK1kx3cp4lHyhQyHuUk-_Jfi5o-MxSDor30DdY2GY92iKB
 
 {
     "name": "John",
