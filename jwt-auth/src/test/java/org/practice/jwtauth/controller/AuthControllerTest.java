@@ -1,21 +1,20 @@
 package org.practice.jwtauth.controller;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.junit.jupiter.api.Test;
 import org.practice.jwtauth.entity.User;
 import org.practice.jwtauth.model.LoginUser;
 import org.practice.jwtauth.repository.UserRepository;
 import org.practice.jwtauth.service.CustomUserDetailsService;
-import org.practice.jwtauth.service.UserService;
 import org.practice.jwtauth.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.is;
@@ -33,27 +32,19 @@ class AuthControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Mock
+    @MockitoBean
     private AuthenticationManager authenticationManager;
 
-    @Mock
+    @MockitoBean
     private CustomUserDetailsService customUserDetailsService;
 
-    @Mock
+    @MockitoBean
     private JwtUtil jwtUtil;
 
-    @Mock
-    private UserService userService;
-
-    @Mock
+    @MockitoBean
     private UserRepository userRepository;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
-    //    @Test
+    @Test
     void login_ShouldReturnTokens_WhenCredentialsAreValid() throws Exception {
         LoginUser loginUser = new LoginUser("testUser", "password123");
         String accessToken = "accessToken";
@@ -87,16 +78,15 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.refreshToken", is(refreshToken)));
     }
 
-//    @Test
-//    void login_ShouldReturnUnauthorized_WhenCredentialsAreInvalid() throws Exception {
-//        LoginUser loginUser = new LoginUser("invalidUser", "wrongPassword");
-//
-//        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-//                .thenThrow(new BadCredentialsException("Bad Credentials"));
-//
-//        mockMvc.perform(post("/auth/login")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content("{\"name\":\"invalidUser\",\"password\":\"wrongPassword\"}"))
-//                .andExpect(status().isUnauthorized());
-//    }
+    @Test
+    void login_ShouldReturnUnauthorized_WhenCredentialsAreInvalid() throws Exception {
+
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+                .thenThrow(new BadCredentialsException("Bad Credentials"));
+
+        mockMvc.perform(post("/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"invalidUser\",\"password\":\"wrongPassword\"}"))
+                .andExpect(status().isForbidden());
+    }
 }
