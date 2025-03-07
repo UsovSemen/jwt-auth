@@ -41,11 +41,10 @@ public class SecurityConfig {
 
         http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
-        http.addFilterAfter(csrfTokenLogger, CsrfFilter.class);
-        // TODO if it possible to configure it by Profile (dev-disable, qa-enable)
-        http.csrf(AbstractHttpConfigurer::disable); // disable for dev
-        http.authorizeHttpRequests(c -> c
-                        .requestMatchers("/auth/login", "/auth/signup", "/auth/test", "/main").permitAll()
+        http.addFilterAfter(csrfTokenLogger, CsrfFilter.class)
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(c -> c
+                        .requestMatchers("/auth/login", "/auth/signup").permitAll()
                         .anyRequest().authenticated());
 
         return http.build();

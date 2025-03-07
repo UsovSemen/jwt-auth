@@ -12,7 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
@@ -28,12 +31,6 @@ public class AuthController {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.userService = userService;
-    }
-
-//    @CrossOrigin("http://google.com")
-    @GetMapping("/test")
-    public String auth() {
-        return "test";
     }
 
     @PostMapping(value = "/signup")
@@ -53,7 +50,7 @@ public class AuthController {
 
     @PostMapping("/refresh")
     public ResponseEntity<LoginResponse> refresh(@RequestBody String refreshToken) {
-        if(jwtUtil.isValid(refreshToken)) {
+        if (jwtUtil.isValid(refreshToken)) {
             String userNameFromToken = jwtUtil.getUserNameFromToken(refreshToken);
             return generateTokes(userNameFromToken);
         }
@@ -61,9 +58,7 @@ public class AuthController {
     }
 
     private ResponseEntity<LoginResponse> generateTokes(String name) {
-
         logger.info("Generating tokens for {}", name);
-
         String acc = jwtUtil.generateAccessToken(name);
         String refresh = jwtUtil.generateRefreshToken(name);
         return new ResponseEntity<>(new LoginResponse(name, acc, refresh), HttpStatus.OK);

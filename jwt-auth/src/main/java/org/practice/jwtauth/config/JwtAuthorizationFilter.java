@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.practice.jwtauth.util.JwtUtil;
+import org.practice.jwtauth.util.Params;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,8 +18,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import static org.practice.jwtauth.util.Const.BEARER_PREFIX;
 
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
@@ -34,12 +33,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
         String authorization = request.getHeader("Authorization");
-        if(authorization == null || !authorization.startsWith(BEARER_PREFIX)) {
+        if (authorization == null || !authorization.startsWith(Params.BEARER_PREFIX.getValue())) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String token = authorization.substring(BEARER_PREFIX.length());
+        String token = authorization.substring(Params.BEARER_PREFIX.getValue().length());
         logger.info("JWT token: {}", token);
         if (!jwtUtil.isValid(token)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

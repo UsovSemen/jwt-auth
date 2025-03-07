@@ -2,11 +2,8 @@ package org.practice.jwtauth.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.SignatureException;
-import jakarta.inject.Inject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 
 import java.util.Date;
 
@@ -33,7 +30,7 @@ class JwtUtilTest {
         Jws<Claims> claimsJws = jwtUtil.parseToken(accessToken);
         assertNotNull(claimsJws);
 
-        assertEquals(name, claimsJws.getPayload().get(Const.USER_NAME));
+        assertEquals(name, claimsJws.getPayload().get(Params.USER_NAME.getValue()));
         assertTrue(claimsJws.getPayload().getExpiration().after(new Date()));
 
     }
@@ -50,7 +47,7 @@ class JwtUtilTest {
         Jws<Claims> claimsJws = jwtUtil.parseToken(refreshToken);
         assertNotNull(claimsJws);
 
-        assertEquals(name, claimsJws.getPayload().get(Const.USER_NAME));
+        assertEquals(name, claimsJws.getPayload().get(Params.USER_NAME.getValue()));
         assertTrue(claimsJws.getPayload().getExpiration().after(new Date()));
 
     }
@@ -85,7 +82,7 @@ class JwtUtilTest {
 
         Jws<Claims> claimsJws = jwtUtil.parseToken(token);
         assertNotNull(claimsJws);
-        assertEquals(username, claimsJws.getPayload().get(Const.USER_NAME, String.class));
+        assertEquals(username, claimsJws.getPayload().get(Params.USER_NAME.getValue(), String.class));
     }
 
 

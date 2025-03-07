@@ -6,14 +6,13 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.time.Duration;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
     SecretKey secretKey = Jwts.SIG.HS256.key().build();
-    private final long accessTokenValidity = 15 * 60 * 1000;
-    private final long refreshTokenValidity = 60 * 60 * 60 * 1000;
 
     public boolean isValid(String authentication) {
         try {
@@ -32,9 +31,9 @@ public class JwtUtil {
                 .keyId("appId")
                 .and()
                 .subject("token company")
-                .claim(Const.USER_NAME, username)
+                .claim(Params.USER_NAME.getValue(), username)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + accessTokenValidity))
+                .expiration(new Date(System.currentTimeMillis() + Duration.ofMinutes(15).toMillis()))
                 .signWith(secretKey)
                 .compact();
     }
@@ -45,16 +44,16 @@ public class JwtUtil {
                 .keyId("appId")
                 .and()
                 .subject("token company")
-                .claim(Const.USER_NAME, username)
+                .claim(Params.USER_NAME.getValue(), username)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + refreshTokenValidity))
+                .expiration(new Date(System.currentTimeMillis() + Duration.ofMinutes(60).toMillis()))
                 .signWith(secretKey)
                 .compact();
     }
 
     public String getUserNameFromToken(String token) {
         Jws<Claims> claimsJws = parseToken(token);
-        return claimsJws.getPayload().get(Const.USER_NAME, String.class);
+        return claimsJws.getPayload().get(Params.USER_NAME.getValue(), String.class);
     }
 
     public Jws<Claims> parseToken(String token) {
